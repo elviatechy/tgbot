@@ -6,7 +6,7 @@ import zipfile
 from telegram.ext import CommandHandler, MessageHandler, Updater, filters
 
 # Define your bot's token here
-TOKEN = "6329265648:AAGI0pDQr9ovBwB4onLBf7eZzuZpHtvfCng"
+TOKEN = "7196164913:AAGuFDBVI-GJ8k3bAJSMpr-jkKLOQ-Z6S1s"
 
 # Define the user IDs allowed to access the bot
 ALLOWED_USER_IDS = {1063746236, 987654321, 555555555}  # Replace with your allowed user IDs
