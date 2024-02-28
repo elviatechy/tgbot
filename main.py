@@ -1,10 +1,9 @@
-import os
-import zipfile
-import shutil
 import logging
-from xml.etree import ElementTree as ET
-from telegram.ext import Updater, CommandHandler, MessageHandler, filters
-import queue
+import os
+import shutil
+import zipfile
+
+from telegram.ext import CommandHandler, MessageHandler, Updater, filters
 
 # Define your bot's token here
 TOKEN = "6329265648:AAGI0pDQr9ovBwB4onLBf7eZzuZpHtvfCng"
@@ -45,7 +44,7 @@ def personalize_apk(apk_path, mobile_number):
         zip_ref.extractall("temp")
 
     # Edit the smali files to replace "VNM" with the mobile number
-    for root, dirs, files in os.walk("temp"):
+    for root, _dirs, files in os.walk("temp"):
         for file in files:
             if file.endswith(".smali"):
                 smali_path = os.path.join(root, file)
@@ -68,22 +67,17 @@ def replace_text_in_file(file_path, old_text, new_text):
     with open(file_path, "w", encoding="utf-8") as file:
         file.write(file_data)
 
-  def main():
-    # Create the Updater and pass in your bot's token
-    updater = Updater(TOKEN)
+    def main():
+      updater = Updater(TOKEN, use_context=True)
+      dp = updater.dispatcher
 
-    # Get the dispatcher to register handlers
-    dp = updater.dispatcher
+      # Define the command handlers
+      dp.add_handler(CommandHandler("start", start))
+      dp.add_handler(MessageHandler(filters.Regex(r'^\d{10}$'), handle_mobile_number))
 
-    # Define the command handlers
-    dp.add_handler(CommandHandler("start", start))
+      # Start the Bot
+      updater.start_polling()
+      updater.idle()
 
-    # Define the message handler for mobile numbers
-    dp.add_handler(MessageHandler(filters.Regex(r'^\d{10}$'), handle_mobile_number))
-
-    # Start the Bot
-    updater.start_polling()
-    updater.idle()
-
-if __name__ == '__main__':
-    main()      
+    if __name__ == "__main__":
+      main()
